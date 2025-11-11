@@ -1,6 +1,3 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -33,7 +30,7 @@ to quickly create a Cobra application.`,
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute(config *internal.Config, graphqlClient *graphql.Client) {
 	unraidClient = client.NewUnraidClient(config.Api.ApiKey, graphqlClient)
-	
+
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
