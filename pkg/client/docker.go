@@ -2,27 +2,42 @@ package client
 
 import (
 	"context"
-	"fmt"
-	"log"
-	"strings"
 
 	"github.com/machinebox/graphql"
 )
 
-type DockerClient struct {
+type DockerClient interface {
+	ListContainers(ctx context.Context) (*ListContainersModel, error)
+	StartContainer(ctx context.Context, startId string) (*StartContainerModel, error)
+	StopContainer(ctx context.Context, stopId string) (*StopContainerModel, error)
+}
+
+type RealDockerClient struct {
 	ApiKey        string
 	GraphQLClient *graphql.Client
 }
 
-func NewDockerClient(apiKey string, graphqlClient *graphql.Client) *DockerClient {
-	return &DockerClient{
+var _ DockerClient = (*RealDockerClient)(nil)
+
+func NewDockerClient(apiKey string, graphqlClient *graphql.Client) DockerClient {
+	return &RealDockerClient{
 		ApiKey:        apiKey,
 		GraphQLClient: graphqlClient,
 	}
 }
 
-func (c *DockerClient) ListContainers(ctx context.Context) {
-	query := `
+type ListContainersModel struct {
+	Docker struct {
+		Containers []struct {
+			ID    string `json:"id"`
+			Image string `json:"image"`
+			State string `json:"state"`
+		} `json:"containers"`
+	} `json:"docker"`
+}
+
+func (c *RealDockerClient) ListContainers(ctx context.Context) (*ListContainersModel, error) {
+	qglQuery := `
 	query Query {
 		docker {
 			containers {
@@ -33,37 +48,21 @@ func (c *DockerClient) ListContainers(ctx context.Context) {
 		}
 	}`
 
-	req := graphql.NewRequest(query)
-	req.Header.Set(ApiKeyHeader, c.ApiKey)
+	req := graphql.NewRequest(qglQuery)
+	auth(req, c.ApiKey)
 
-	var respData struct {
-		Docker struct {
-			Containers []struct {
-				ID    string `json:"id"`
-				Image string `json:"image"`
-				State string `json:"state"`
-			} `json:"containers"`
-		} `json:"docker"`
-	}
-
-	if err := c.GraphQLClient.Run(ctx, req, &respData); err != nil {
-		log.Printf("Error query list containers: %v", err)
-		return
-	}
-
-	for _, container := range respData.Docker.Containers {
-		idParts := strings.Split(container.ID, ":")
-		compactID := idParts[len(idParts)-1]
-
-		if len(compactID) > 12 {
-			compactID = compactID[:12]
-		}
-
-		fmt.Printf("ID: %s | Image: %s | State: %s\n", compactID, container.Image, container.State)
-	}
+	return query[ListContainersModel](ctx, c.GraphQLClient, req)
 }
 
-func (c *DockerClient) StartContainer(ctx context.Context, startId string) {
+type StartContainerModel struct {
+	Docker struct {
+		Start struct {
+			ID string `json:"id"`
+		} `json:"start"`
+	} `json:"docker"`
+}
+
+func (c *RealDockerClient) StartContainer(ctx context.Context, startId string) (*StartContainerModel, error) {
 	mutation := `
 	mutation Mutation($startId: PrefixedID!) {
 		docker {
@@ -74,27 +73,22 @@ func (c *DockerClient) StartContainer(ctx context.Context, startId string) {
 	}`
 
 	req := graphql.NewRequest(mutation)
-	req.Header.Set(ApiKeyHeader, c.ApiKey)
+	auth(req, c.ApiKey)
 
 	req.Var("startId", startId)
 
-	var respData struct {
-		Docker struct {
-			Start struct {
-				ID string `json:"id"`
-			} `json:"start"`
-		} `json:"docker"`
-	}
-
-	if err := c.GraphQLClient.Run(ctx, req, &respData); err != nil {
-		log.Printf("Error mutation start: %v", err)
-		return
-	}
-
-	fmt.Printf("Container started with ID: %s\n", respData.Docker.Start.ID)
+	return query[StartContainerModel](ctx, c.GraphQLClient, req)
 }
 
-func (c *DockerClient) StopContainer(ctx context.Context, stopId string) {
+type StopContainerModel struct {
+	Docker struct {
+		Stop struct {
+			ID string `json:"id"`
+		} `json:"stop"`
+	} `json:"docker"`
+}
+
+func (c *RealDockerClient) StopContainer(ctx context.Context, stopId string) (*StopContainerModel, error) {
 	mutation := `
 	mutation Stop($stopId: PrefixedID!) {
 		docker {
@@ -105,21 +99,9 @@ func (c *DockerClient) StopContainer(ctx context.Context, stopId string) {
 	}`
 
 	req := graphql.NewRequest(mutation)
-	req.Header.Set(ApiKeyHeader, c.ApiKey)
+	auth(req, c.ApiKey)
 
 	req.Var("stopId", stopId)
 
-	var respData struct {
-		Docker struct {
-			Stop struct {
-				ID string `json:"id"`
-			} `json:"stop"`
-		} `json:"docker"`
-	}
-
-	if err := c.GraphQLClient.Run(ctx, req, &respData); err != nil {
-		log.Printf("Error mutation stop: %v", err)
-	}
-
-	fmt.Printf("Container stopped with ID: %s\n", respData.Docker.Stop.ID)
+	return query[StopContainerModel](ctx, c.GraphQLClient, req)
 }

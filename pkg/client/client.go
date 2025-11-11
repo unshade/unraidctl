@@ -7,7 +7,7 @@ const (
 )
 
 type UnraidClient struct {
-	Docker *DockerClient
+	Docker DockerClient
 }
 
 func NewUnraidClient(apiKey string, graphqlClient *graphql.Client) *UnraidClient {
@@ -15,5 +15,3 @@ func NewUnraidClient(apiKey string, graphqlClient *graphql.Client) *UnraidClient
 		Docker: NewDockerClient(apiKey, graphqlClient),
 	}
 }
-
-

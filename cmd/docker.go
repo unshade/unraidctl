@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/unshade/unraidctl/internal/controllers"
 )
 
 // dockerCmd represents the docker command
@@ -18,9 +19,10 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		controller := controllers.NewDockerController(unraidClient)
 		switch args[0] {
 		case "list":
-			unraidClient.Docker.ListContainers(cmd.Context())
+			controller.ListContainers(cmd.Context())
 		case "stop":
 			unraidClient.Docker.StopContainer(cmd.Context(), args[1])
 		case "start":
