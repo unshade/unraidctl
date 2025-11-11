@@ -19,12 +19,12 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		switch args[0] {
+		case "list":
+			unraidClient.Docker.ListContainers(cmd.Context())
 		case "stop":
 			unraidClient.Docker.StopContainer(cmd.Context(), args[1])
 		case "start":
-			// startContainer(cmd, args)
-		case "restart":
-			// restartContainer(cmd, args)
+			unraidClient.Docker.StartContainer(cmd.Context(), args[1])
 		}
 	},
 }
@@ -32,6 +32,6 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(dockerCmd)
 
-	dockerCmd.Args = cobra.MinimumNArgs(2)
-	dockerCmd.ValidArgs = []string{"stop", "restart", "start"}
+	dockerCmd.Args = cobra.MinimumNArgs(1)
+	dockerCmd.ValidArgs = []string{"stop", "restart", "start", "list"}
 }
