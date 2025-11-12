@@ -30,6 +30,10 @@ archives:
       - goos: windows
         formats: [zip]
 
+changelog:
+  sort: asc
+  use: github
+
 release:
   footer: >-
 
