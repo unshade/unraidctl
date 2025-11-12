@@ -77,7 +77,7 @@ func (c *RealDockerClient) StartContainer(ctx context.Context, startId string) (
 
 	req.Var("startId", startId)
 
-	return query[StartContainerModel](ctx, c.GraphQLClient, req)
+	return ignoreNotFound(query[StartContainerModel](ctx, c.GraphQLClient, req))
 }
 
 type StopContainerModel struct {
@@ -103,5 +103,5 @@ func (c *RealDockerClient) StopContainer(ctx context.Context, stopId string) (*S
 
 	req.Var("stopId", stopId)
 
-	return query[StopContainerModel](ctx, c.GraphQLClient, req)
+	return ignoreNotFound(query[StopContainerModel](ctx, c.GraphQLClient, req))
 }

@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"strings"
 
 	"github.com/machinebox/graphql"
 )
@@ -16,4 +17,14 @@ func query[T any](ctx context.Context, client *graphql.Client, req *graphql.Requ
 
 func auth(req *graphql.Request, apiKey string) {
 	req.Header.Set(ApiKeyHeader, apiKey)
+}
+
+func ignoreNotFound[T any](response *T, err error) (*T, error) {
+	if err != nil {
+		if (strings.Contains(err.Error(), "not found")) {
+			return response, nil
+		}
+		return response, err
+	}
+	return response, nil
 }
