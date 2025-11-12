@@ -42,6 +42,6 @@
     }
   },
   "hooks": {
-    "after:release": "goreleaser release --clean"
+    "after:release": "go tool goreleaser release --clean"
   }
 }
