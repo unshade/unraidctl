@@ -9,11 +9,13 @@ const (
 type UnraidClient struct {
 	Docker DockerClient
 	Array  ArrayClient
+	VM     VMClient
 }
 
 func NewUnraidClient(apiKey string, graphqlClient *graphql.Client) *UnraidClient {
 	return &UnraidClient{
 		Docker: NewDockerClient(apiKey, graphqlClient),
 		Array:  NewArrayClient(apiKey, graphqlClient),
+		VM:     NewVMClient(apiKey, graphqlClient),
 	}
 }
