@@ -21,7 +21,7 @@ func auth(req *graphql.Request, apiKey string) {
 
 func ignoreNotFound[T any](response *T, err error) (*T, error) {
 	if err != nil {
-		if (strings.Contains(err.Error(), "not found")) {
+		if strings.Contains(err.Error(), "not found") {
 			return response, nil
 		}
 		return response, err

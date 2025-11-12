@@ -8,7 +8,7 @@ import (
 var dockerCmd = &cobra.Command{
 	Use:   "docker",
 	Short: "Interact with unraid Docker engine",
-	Long: `Interact with unraid Docker engine`,
+	Long:  `Interact with unraid Docker engine`,
 	Run: func(cmd *cobra.Command, args []string) {
 		controller := controllers.NewDockerController(unraidClient)
 		switch args[0] {
