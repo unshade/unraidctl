@@ -8,6 +8,21 @@
 
 It stands for "unraid control" and is inspired by tools like `kubectl` for Kubernetes.
 
+# Usage
+
+To use `unraidctl`, you need either need Go installed or you can download a pre-built binary from the [releases](https://github.com/unshade/unraidctl/releases).
+You can build it from source using:
+
+```bash
+go install github.com/unshade/unraidctl@latest
+```
+
+Once installed, you can run commands like:
+
+```bash
+unraidctl docker list
+```
+
 # Library
 
 `unraidctl` also provides a Go library that can be imported into your own Go projects to interact with unraid servers programmatically. Check out the [pkg](./pkg) directory for more details.
