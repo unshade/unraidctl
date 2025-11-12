@@ -1,0 +1,37 @@
+{
+  "git": {
+    "commitMessage": "chore(release): v${version}",
+    "tagName": "v${version}",
+    "requireCleanWorkingDir": true
+  },
+  "github": {
+    "release": true,
+    "releaseName": "v${version}",
+    "tokenRef": "GITHUB_TOKEN"
+  },
+  "npm": {
+    "publish": false
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "conventionalcommits",
+      "infile": "CHANGELOG.md",
+      "ignoreRecommendedBump": false,
+      "header": "# Changelog\n\n",
+      "types": [
+        { "type": "feat", "section": "✨ Features" },
+        { "type": "fix", "section": "🐛 Fixes" },
+        { "type": "chore", "section": "🧹 Chores" },
+        { "type": "docs", "section": "📝 Documentation" },
+        { "type": "refactor", "section": "♻️ Refactors" }
+      ]
+    }
+  },
+  "hooks": {
+    "after:release": "goreleaser release --clean"
+  },
+  "ci": {
+    "skipChecks": true,
+    "requireBranch": "main"
+  }
+}
