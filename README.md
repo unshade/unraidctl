@@ -39,3 +39,4 @@ When generating an API key, make sure it has the necessary permissions for the a
 
 If you'd like to contribute to `unraidctl`, please fork the repository and create a pull request with your changes. Contributions are welcome! Please make sure to follow the existing code style and include tests for any new functionality.
 
+Pipeline and code quality checks are automatically run on each pull request to ensure code quality. They MUST pass before your changes can be merged.
