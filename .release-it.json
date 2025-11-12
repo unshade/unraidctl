@@ -1,13 +1,12 @@
 {
+  "$schema": "https://unpkg.com/release-it/schema/release-it.json",
   "git": {
     "commitMessage": "chore(release): v${version}",
     "tagName": "v${version}",
     "requireCleanWorkingDir": true
   },
   "github": {
-    "release": true,
-    "releaseName": "v${version}",
-    "tokenRef": "GITHUB_TOKEN"
+    "release": true
   },
   "npm": {
     "publish": false
@@ -19,19 +18,30 @@
       "ignoreRecommendedBump": false,
       "header": "# Changelog\n\n",
       "types": [
-        { "type": "feat", "section": "✨ Features" },
-        { "type": "fix", "section": "🐛 Fixes" },
-        { "type": "chore", "section": "🧹 Chores" },
-        { "type": "docs", "section": "📝 Documentation" },
-        { "type": "refactor", "section": "♻️ Refactors" }
+        {
+          "type": "feat",
+          "section": "✨ Features"
+        },
+        {
+          "type": "fix",
+          "section": "🐛 Fixes"
+        },
+        {
+          "type": "chore",
+          "section": "🧹 Chores"
+        },
+        {
+          "type": "docs",
+          "section": "📝 Documentation"
+        },
+        {
+          "type": "refactor",
+          "section": "♻️ Refactors"
+        }
       ]
     }
   },
   "hooks": {
     "after:release": "goreleaser release --clean"
-  },
-  "ci": {
-    "skipChecks": true,
-    "requireBranch": "main"
   }
 }
