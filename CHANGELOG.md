@@ -1,0 +1,16 @@
+# Changelog
+
+
+
+## 0.1.0 (2025-11-12)
+
+### Features
+
+* auto release ([#2](https://github.com/unshade/unraidctl/issues/2)) ([d07317b](https://github.com/unshade/unraidctl/commit/d07317b66ad6f747dae38426461754229125f2e0))
+* **docker:** list & start ([2ff6af1](https://github.com/unshade/unraidctl/commit/2ff6af148dd1473a4f93172880dd7adfb00f903b))
+* **docker:** stop container ([38d404e](https://github.com/unshade/unraidctl/commit/38d404e9b8783a237db4f1792f906e0aca14e5af))
+* init repo ([479ac18](https://github.com/unshade/unraidctl/commit/479ac18cd15c7e4ff5a46e781d6445007b6ae696))
+
+### Bug Fixes
+
+* auto release ([#3](https://github.com/unshade/unraidctl/issues/3)) ([4b13b7d](https://github.com/unshade/unraidctl/commit/4b13b7dec386d35f3dc03e0b1dd800d00a62c144))
