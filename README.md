@@ -17,6 +17,20 @@ You can build it from source using:
 go install github.com/unshade/unraidctl@latest
 ```
 
+You will then need to set the following environment variables to connect to your unraid server:
+
+- `API_KEY`: Your unraid API key.
+- `API_BASE_URL`: The base URL of your unraid server's GraphQL endpoint.
+- `API_SKIP_TLS_VERIFY`: (optional) Set to `true` to skip TLS verification (useful for self-signed certificates).
+
+`unraidctl` also supports a `.env` file for setting these environment variables. You can create a `.env` file in the same directory where you run `unraidctl` with the following format:
+
+```env
+API_KEY=your_api_key
+API_BASE_URL=https://your-unraid-server:port/graphql
+API_SKIP_TLS_VERIFY=true
+```
+
 Once installed, you can run commands like:
 
 ```bash
