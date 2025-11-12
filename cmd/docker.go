@@ -5,16 +5,10 @@ import (
 	"github.com/unshade/unraidctl/internal/controllers"
 )
 
-// dockerCmd represents the docker command
 var dockerCmd = &cobra.Command{
 	Use:   "docker",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Interact with unraid Docker engine",
+	Long: `Interact with unraid Docker engine`,
 	Run: func(cmd *cobra.Command, args []string) {
 		controller := controllers.NewDockerController(unraidClient)
 		switch args[0] {
