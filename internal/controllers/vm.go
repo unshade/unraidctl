@@ -31,3 +31,17 @@ func (c *VmController) ListVMs(ctx context.Context) {
 		fmt.Printf("ID: %s | Name: %s | State: %s\n", compactID, vm.Name, vm.State)
 	}
 }
+
+func (c *VmController) Start(ctx context.Context, vmId string) {
+	_, err := c.unraidClient.VM.Start(ctx, vmId)
+	if err != nil {
+		fmt.Printf("Could not start vm: %v", err)
+	}
+} 
+
+func (c *VmController) Stop(ctx context.Context, vmId string) {
+	_, err := c.unraidClient.VM.Start(ctx, vmId)
+	if err != nil {
+		fmt.Printf("Could not start vm: %v", err)
+	}
+} 

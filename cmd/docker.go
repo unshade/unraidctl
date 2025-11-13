@@ -15,9 +15,9 @@ var dockerCmd = &cobra.Command{
 		case "list":
 			controller.ListContainers(cmd.Context())
 		case "stop":
-			unraidClient.Docker.StopContainer(cmd.Context(), args[1])
+			controller.StopContainer(cmd.Context(), args[1])
 		case "start":
-			unraidClient.Docker.StartContainer(cmd.Context(), args[1])
+			controller.StartContainer(cmd.Context(), args[1])
 		}
 	},
 }

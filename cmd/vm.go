@@ -16,9 +16,9 @@ var vmCmd = &cobra.Command{
 		case "list":
 			controller.ListVMs(cmd.Context())
 		case "start":
-			unraidClient.VM.Start(cmd.Context(), args[1])
+			controller.Start(cmd.Context(), args[1])
 		case "stop":
-			unraidClient.VM.Stop(cmd.Context(), args[1])
+			controller.Stop(cmd.Context(), args[1])
 		}
 	},
 }

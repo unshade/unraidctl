@@ -35,3 +35,17 @@ func (c *DockerController) ListContainers(ctx context.Context) {
 		fmt.Printf("ID: %s | Image: %s | State: %s\n", compactID, container.Image, container.State)
 	}
 }
+
+func (c *DockerController) StartContainer(ctx context.Context, containerid string) {
+	_, err := c.unraidClient.Docker.StartContainer(ctx, containerid)
+	if err != nil {
+		fmt.Printf("Could not start container: %v", err)
+	}
+}
+
+func (c *DockerController) StopContainer(ctx context.Context, containerid string) {
+	_, err := c.unraidClient.Docker.StopContainer(ctx, containerid)
+	if err != nil {
+		fmt.Printf("Could not stop container: %v", err)
+	}
+}
