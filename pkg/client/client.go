@@ -14,9 +14,10 @@ type UnraidClient struct {
 	VM     VMClient
 }
 
+// UnraidClientOption is a function that will bind something into an UnraidClient
 type UnraidClientOption func(*UnraidClient)
 
-// NewUnraidClient will return an UnraidClient initialized with standard sub-clients
+// NewUnraidClient will return an UnraidClient initialized with standard sub-clients.
 // You can change initialized sub-clients with your own implementations using functionnal options
 func NewUnraidClient(apiKey string, graphqlClient *graphql.Client, options ...UnraidClientOption) *UnraidClient {
 	defaultClient := &UnraidClient{

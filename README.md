@@ -1,6 +1,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/unshade/unraidctl)](https://goreportcard.com/report/github.com/unshade/unraidctl)
 [![License](https://img.shields.io/github/license/unshade/unraidctl)](LICENSE)
 [![Release](https://img.shields.io/github/release/unshade/unraidctl.svg)](https://github.com/unshade/unraidctl/releases)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/unshade/unraidctl)
+![GitHub repo size](https://img.shields.io/github/repo-size/unshade/unraidctl)
+
 
 # unraidctl
 
@@ -63,6 +66,14 @@ cp .env.example .env
 You can find the required values in your unraid server settings. Please refer to this documentation if needed: [unraid API Documentation](https://docs.unraid.net/API/).
 
 When generating an API key, make sure it has the necessary permissions for the actions you want to perform with `unraidctl`. Please follow the least privilege principle and only grant the permissions that are absolutely necessary.
+
+# Architecture
+
+`unraidctl` is designed to be extensible, easy to test and debug.
+Logic is stored inside `internal` package. It uses the `pkg` package that you can also import as a library to interract with unraid.
+Every parts in `pkg` are using an interface and so can be changed with your implementation or mocked for testing purpose.
+One sub-command is one unraid subject (docker, vms, array).
+Keep-it-stoopid-simple.
 
 # Contributing
 

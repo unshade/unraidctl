@@ -7,11 +7,15 @@ import (
 	"github.com/unshade/unraidctl/internal/models"
 )
 
+// ArrayClient is used to interract with unraid array system
 type ArrayClient interface {
+	// ShowArray will return the current state of the unraid array
 	ShowArray(ctx context.Context) (*models.ShowArrayModel, error)
+	// MutateArray allows to change make a transition to a new state : STARTED -> STOPPED
 	MutateArray(ctx context.Context, state ArrayState) (*models.MutateArrayModel, error)
 }
 
+// RealArrayClient is a basic implementation for an ArrayClient
 type RealArrayClient struct {
 	ApiKey        string
 	GraphQLClient *graphql.Client
@@ -41,7 +45,6 @@ func (c *RealArrayClient) ShowArray(ctx context.Context) (*models.ShowArrayModel
 }
 
 type ArrayState = string
-
 const (
 	ArrayStateStart ArrayState = "START"
 	ArrayStateStop  ArrayState = "STOP"
