@@ -4,12 +4,13 @@ import (
 	"context"
 
 	"github.com/machinebox/graphql"
+	"github.com/unshade/unraidctl/internal/models"
 )
 
 type VMClient interface {
-	ListVMs(ctx context.Context) (*ListVMsModel, error)
-	Start(ctx context.Context, id string) (*StartVMModel, error)
-	Stop(ctx context.Context, id string) (*StopVMModel, error)
+	ListVMs(ctx context.Context) (*models.ListVMsModel, error)
+	Start(ctx context.Context, id string) (*models.StartVMModel, error)
+	Stop(ctx context.Context, id string) (*models.StopVMModel, error)
 }
 
 type RealVMClient struct {
@@ -26,18 +27,7 @@ func NewVMClient(apiKey string, graphqlClient *graphql.Client) VMClient {
 	}
 }
 
-type ListVMsModel struct {
-	VMs struct {
-		ID      string `json:"id"`
-		Domains []struct {
-			Name  string `json:"name"`
-			State string `json:"state"`
-			Id    string `json:"id"`
-		} `json:"domains"`
-	} `json:"vms"`
-}
-
-func (c *RealVMClient) ListVMs(ctx context.Context) (*ListVMsModel, error) {
+func (c *RealVMClient) ListVMs(ctx context.Context) (*models.ListVMsModel, error) {
 	qglQuery := `
 	query Query {
 		vms {
@@ -53,14 +43,10 @@ func (c *RealVMClient) ListVMs(ctx context.Context) (*ListVMsModel, error) {
 	req := graphql.NewRequest(qglQuery)
 	auth(req, c.ApiKey)
 
-	return query[ListVMsModel](ctx, c.GraphQLClient, req)
+	return query[models.ListVMsModel](ctx, c.GraphQLClient, req)
 }
 
-type StartVMModel struct {
-	Id string `json:"id"`
-}
-
-func (c *RealVMClient) Start(ctx context.Context, id string) (*StartVMModel, error) {
+func (c *RealVMClient) Start(ctx context.Context, id string) (*models.StartVMModel, error) {
 	qglQuery := `
 	mutation Start($startId: PrefixedID!) {
 		vm {
@@ -72,14 +58,10 @@ func (c *RealVMClient) Start(ctx context.Context, id string) (*StartVMModel, err
 	auth(req, c.ApiKey)
 	req.Var("startId", id)
 
-	return query[StartVMModel](ctx, c.GraphQLClient, req)
+	return query[models.StartVMModel](ctx, c.GraphQLClient, req)
 }
 
-type StopVMModel struct {
-	Id string `json:"id"`
-}
-
-func (c *RealVMClient) Stop(ctx context.Context, id string) (*StopVMModel, error) {
+func (c *RealVMClient) Stop(ctx context.Context, id string) (*models.StopVMModel, error) {
 	qglQuery := `
 	mutation Stop($stopId: PrefixedID!) {
 		vm {
@@ -91,5 +73,5 @@ func (c *RealVMClient) Stop(ctx context.Context, id string) (*StopVMModel, error
 	auth(req, c.ApiKey)
 	req.Var("stopId", id)
 
-	return ignoreNotFound(query[StopVMModel](ctx, c.GraphQLClient, req))
+	return ignoreNotFound(query[models.StopVMModel](ctx, c.GraphQLClient, req))
 }

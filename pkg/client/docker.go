@@ -4,12 +4,13 @@ import (
 	"context"
 
 	"github.com/machinebox/graphql"
+	"github.com/unshade/unraidctl/internal/models"
 )
 
 type DockerClient interface {
-	ListContainers(ctx context.Context) (*ListContainersModel, error)
-	StartContainer(ctx context.Context, startId string) (*StartContainerModel, error)
-	StopContainer(ctx context.Context, stopId string) (*StopContainerModel, error)
+	ListContainers(ctx context.Context) (*models.ListContainersModel, error)
+	StartContainer(ctx context.Context, startId string) (*models.StartContainerModel, error)
+	StopContainer(ctx context.Context, stopId string) (*models.StopContainerModel, error)
 }
 
 type RealDockerClient struct {
@@ -26,17 +27,7 @@ func NewDockerClient(apiKey string, graphqlClient *graphql.Client) DockerClient 
 	}
 }
 
-type ListContainersModel struct {
-	Docker struct {
-		Containers []struct {
-			ID    string `json:"id"`
-			Image string `json:"image"`
-			State string `json:"state"`
-		} `json:"containers"`
-	} `json:"docker"`
-}
-
-func (c *RealDockerClient) ListContainers(ctx context.Context) (*ListContainersModel, error) {
+func (c *RealDockerClient) ListContainers(ctx context.Context) (*models.ListContainersModel, error) {
 	qglQuery := `
 	query Query {
 		docker {
@@ -51,18 +42,10 @@ func (c *RealDockerClient) ListContainers(ctx context.Context) (*ListContainersM
 	req := graphql.NewRequest(qglQuery)
 	auth(req, c.ApiKey)
 
-	return query[ListContainersModel](ctx, c.GraphQLClient, req)
+	return query[models.ListContainersModel](ctx, c.GraphQLClient, req)
 }
 
-type StartContainerModel struct {
-	Docker struct {
-		Start struct {
-			ID string `json:"id"`
-		} `json:"start"`
-	} `json:"docker"`
-}
-
-func (c *RealDockerClient) StartContainer(ctx context.Context, startId string) (*StartContainerModel, error) {
+func (c *RealDockerClient) StartContainer(ctx context.Context, startId string) (*models.StartContainerModel, error) {
 	mutation := `
 	mutation Mutation($startId: PrefixedID!) {
 		docker {
@@ -77,18 +60,10 @@ func (c *RealDockerClient) StartContainer(ctx context.Context, startId string) (
 
 	req.Var("startId", startId)
 
-	return ignoreNotFound(query[StartContainerModel](ctx, c.GraphQLClient, req))
+	return ignoreNotFound(query[models.StartContainerModel](ctx, c.GraphQLClient, req))
 }
 
-type StopContainerModel struct {
-	Docker struct {
-		Stop struct {
-			ID string `json:"id"`
-		} `json:"stop"`
-	} `json:"docker"`
-}
-
-func (c *RealDockerClient) StopContainer(ctx context.Context, stopId string) (*StopContainerModel, error) {
+func (c *RealDockerClient) StopContainer(ctx context.Context, stopId string) (*models.StopContainerModel, error) {
 	mutation := `
 	mutation Stop($stopId: PrefixedID!) {
 		docker {
@@ -103,5 +78,5 @@ func (c *RealDockerClient) StopContainer(ctx context.Context, stopId string) (*S
 
 	req.Var("stopId", stopId)
 
-	return ignoreNotFound(query[StopContainerModel](ctx, c.GraphQLClient, req))
+	return ignoreNotFound(query[models.StopContainerModel](ctx, c.GraphQLClient, req))
 }

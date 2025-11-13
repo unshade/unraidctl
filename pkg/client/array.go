@@ -4,11 +4,12 @@ import (
 	"context"
 
 	"github.com/machinebox/graphql"
+	"github.com/unshade/unraidctl/internal/models"
 )
 
 type ArrayClient interface {
-	ShowArray(ctx context.Context) (*ShowArrayModel, error)
-	MutateArray(ctx context.Context, state ArrayState) (*MutateArrayModel, error)
+	ShowArray(ctx context.Context) (*models.ShowArrayModel, error)
+	MutateArray(ctx context.Context, state ArrayState) (*models.MutateArrayModel, error)
 }
 
 type RealArrayClient struct {
@@ -25,13 +26,7 @@ func NewArrayClient(apiKey string, graphqlClient *graphql.Client) ArrayClient {
 	}
 }
 
-type ShowArrayModel struct {
-	Array struct {
-		State string `json:"state"`
-	} `json:"array"`
-}
-
-func (c *RealArrayClient) ShowArray(ctx context.Context) (*ShowArrayModel, error) {
+func (c *RealArrayClient) ShowArray(ctx context.Context) (*models.ShowArrayModel, error) {
 	qglQuery := `
 	query Query {
 		array {
@@ -42,11 +37,7 @@ func (c *RealArrayClient) ShowArray(ctx context.Context) (*ShowArrayModel, error
 	req := graphql.NewRequest(qglQuery)
 	auth(req, c.ApiKey)
 
-	return query[ShowArrayModel](ctx, c.GraphQLClient, req)
-}
-
-type MutateArrayModel struct {
-	Id string `json:"id"`
+	return query[models.ShowArrayModel](ctx, c.GraphQLClient, req)
 }
 
 type ArrayState = string
@@ -56,7 +47,7 @@ const (
 	ArrayStateStop  ArrayState = "STOP"
 )
 
-func (c *RealArrayClient) MutateArray(ctx context.Context, state ArrayState) (*MutateArrayModel, error) {
+func (c *RealArrayClient) MutateArray(ctx context.Context, state ArrayState) (*models.MutateArrayModel, error) {
 	qglQuery := `
 	mutation Array($input: ArrayStateInput!) {
 		array {
@@ -73,5 +64,5 @@ func (c *RealArrayClient) MutateArray(ctx context.Context, state ArrayState) (*M
 		"desiredState": state,
 	})
 
-	return query[MutateArrayModel](ctx, c.GraphQLClient, req)
+	return query[models.MutateArrayModel](ctx, c.GraphQLClient, req)
 }
