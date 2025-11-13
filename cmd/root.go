@@ -9,7 +9,10 @@ import (
 	"github.com/unshade/unraidctl/pkg/client"
 )
 
-var unraidClient *client.UnraidClient
+var (
+	outputFormat string
+	unraidClient *client.UnraidClient
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{

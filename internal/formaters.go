@@ -2,17 +2,18 @@ package internal
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"go.yaml.in/yaml/v2"
 )
 
-type OutputFormater[T any] interface {
-	Format(input T) (string, error)
+type OutputFormater interface {
+	Format(input any) (string, error)
 }
 
 type YamlOutputFormater struct{}
 
-var _ OutputFormater[any] = (*YamlOutputFormater)(nil)
+var _ OutputFormater = (*YamlOutputFormater)(nil)
 
 func (f *YamlOutputFormater) Format(input any) (string, error) {
 	yamled, err := yaml.Marshal(input)
@@ -24,28 +25,31 @@ func (f *YamlOutputFormater) Format(input any) (string, error) {
 
 type JsonOutputFormater struct{}
 
-var _ OutputFormater[any] = (*JsonOutputFormater)(nil)
+var _ OutputFormater = (*JsonOutputFormater)(nil)
 
 func (f *JsonOutputFormater) Format(input any) (string, error) {
-	jsoned, err := json.MarshalIndent(input, "", "\t")
+	jsoned, err := json.MarshalIndent(input, "", " ")
 	if err != nil {
 		return "", err
 	}
 	return string(jsoned), nil
 }
 
-type ArrayOutputFormater struct{}
+type TextOutputFormater struct{}
 
-var _ OutputFormater[ArrayInput] = (*ArrayOutputFormater)(nil)
+var _ OutputFormater = (*TextOutputFormater)(nil)
 
-type ArrayInput struct {
-	Header []string
-	Content [][]string
-}
-func (f *ArrayOutputFormater) Format(input ArrayInput) (string, error) {
-	jsoned, err := json.MarshalIndent(input, "", "\t")
-	if err != nil {
-		return "", err
+func (f *TextOutputFormater) Format(input any) (string, error) {
+	if stringer, ok := input.(fmt.Stringer); ok {
+		return stringer.String(), nil
 	}
-	return string(jsoned), nil
+	return "", fmt.Errorf("input does not implement fmt.Stringer")
+}
+
+func PrintFormat(stringed string, err error) {
+	if err != nil {
+		fmt.Printf("Error formatting output: %v\n", err)
+		return
+	}
+	fmt.Println(stringed)
 }

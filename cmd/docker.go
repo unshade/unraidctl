@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/unshade/unraidctl/internal"
 	"github.com/unshade/unraidctl/internal/controllers"
 )
 
@@ -10,7 +11,8 @@ var dockerCmd = &cobra.Command{
 	Short: "Interact with unraid Docker engine",
 	Long:  `Interact with unraid Docker engine`,
 	Run: func(cmd *cobra.Command, args []string) {
-		controller := controllers.NewDockerController(unraidClient)
+		formater := internal.OutputFormaterSwitcher(internal.OutputFormat(outputFormat))
+		controller := controllers.NewDockerController(unraidClient, formater)
 		switch args[0] {
 		case "list":
 			controller.ListContainers(cmd.Context())
@@ -27,4 +29,5 @@ func init() {
 
 	dockerCmd.Args = cobra.MinimumNArgs(1)
 	dockerCmd.ValidArgs = []string{"stop", "restart", "start", "list"}
+	dockerCmd.Flags().StringVarP(&outputFormat, "output", "o", "text", "Output format: json|yaml|text")
 }

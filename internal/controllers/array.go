@@ -3,42 +3,46 @@ package controllers
 import (
 	"context"
 	"fmt"
-	"strings"
 
+	"github.com/unshade/unraidctl/internal"
 	"github.com/unshade/unraidctl/pkg/client"
 )
 
 type ArrayController struct {
 	unraidClient *client.UnraidClient
+	formater     internal.OutputFormater
 }
 
-func NewArrayController(unraidClient *client.UnraidClient) *ArrayController {
+func NewArrayController(unraidClient *client.UnraidClient, formater internal.OutputFormater) *ArrayController {
 	return &ArrayController{
 		unraidClient: unraidClient,
+		formater:     formater,
 	}
 }
 
 func (c *ArrayController) ShowArray(ctx context.Context) {
-	respData, err := c.unraidClient.Array.ShowArray(ctx)
+	response, err := c.unraidClient.Array.ShowArray(ctx)
 	if err != nil {
 		fmt.Printf("Error showing array: %v\n", err)
 		return
 	}
-	fmt.Printf("Array State: %s\n", strings.ToLower(respData.Array.State))
+	internal.PrintFormat(c.formater.Format(response))
 }
 
 func (c *ArrayController) StopArray(ctx context.Context) {
-	_, err := c.unraidClient.Array.MutateArray(ctx, client.ArrayStateStop)
+	response, err := c.unraidClient.Array.MutateArray(ctx, client.ArrayStateStop)
 	if err != nil {
 		fmt.Printf("Error stopping array: %v\n", err)
 		return
 	}
+	internal.PrintFormat(c.formater.Format(response))
 }
 
 func (c *ArrayController) StartArray(ctx context.Context) {
-	_, err := c.unraidClient.Array.MutateArray(ctx, client.ArrayStateStart)
+	response, err := c.unraidClient.Array.MutateArray(ctx, client.ArrayStateStart)
 	if err != nil {
 		fmt.Printf("Error starting array: %v\n", err)
 		return
 	}
+	internal.PrintFormat(c.formater.Format(response))
 }
