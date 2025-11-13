@@ -2,6 +2,16 @@
 
 
 
+## [0.3.0](https://github.com/unshade/unraidctl/compare/v0.2.0...v0.3.0) (2025-11-13)
+
+### Features
+
+* customize client implementations ([53f9a56](https://github.com/unshade/unraidctl/commit/53f9a56a9c7b00d5451f7b72ad75152dc82a9a7a))
+* json yaml and text outputs ([9306160](https://github.com/unshade/unraidctl/commit/9306160fbaafc907a493a0e49e008c562d50177c))
+* output formaters ([758fd75](https://github.com/unshade/unraidctl/commit/758fd75e5bf5732fae2467f4381d8407116eae18))
+* strict env ([79780e5](https://github.com/unshade/unraidctl/commit/79780e5b81d7b3f75b1dc6f1feeb5b27daa9e75b))
+* **vm:** list start stop ([70ced51](https://github.com/unshade/unraidctl/commit/70ced516f2dfbf5104ba4069028443271e2c4d26))
+
 ## [0.2.0](https://github.com/unshade/unraidctl/compare/v0.1.1...v0.2.0) (2025-11-12)
 
 ### Features
