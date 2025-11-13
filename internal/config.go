@@ -7,9 +7,9 @@ import (
 
 type Config struct {
 	Api struct {
-		BaseUrl       string `env:"BASE_URL"`
-		ApiKey        string `env:"KEY"`
-		SkipTlsVerify bool   `env:"SKIP_TLS_VERIFY"`
+		BaseUrl       string `env:"BASE_URL,required"`
+		ApiKey        string `env:"KEY,required"`
+		SkipTlsVerify bool   `env:"SKIP_TLS_VERIFY" envDefault:"true"`
 	} `envPrefix:"API_"`
 }
 
