@@ -2,6 +2,12 @@
 
 
 
+## [0.4.0](https://github.com/unshade/unraidctl/compare/v0.3.0...v0.4.0) (2025-12-04)
+
+### Features
+
+* **share:** unraid shares ([09edd86](https://github.com/unshade/unraidctl/commit/09edd86f6653265fbf9fe6d38122f87f72d5a3e5))
+
 ## [0.3.0](https://github.com/unshade/unraidctl/compare/v0.2.0...v0.3.0) (2025-11-13)
 
 ### Features
