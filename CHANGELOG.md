@@ -2,6 +2,12 @@
 
 
 
+## [0.5.0](https://github.com/unshade/unraidctl/compare/v0.4.0...v0.5.0) (2025-12-04)
+
+### Features
+
+* **config:** json config ([a993c33](https://github.com/unshade/unraidctl/commit/a993c3364901750a777605e25cc88a413c8c4d33))
+
 ## [0.4.0](https://github.com/unshade/unraidctl/compare/v0.3.0...v0.4.0) (2025-12-04)
 
 ### Features
