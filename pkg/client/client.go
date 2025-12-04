@@ -12,6 +12,7 @@ type UnraidClient struct {
 	Docker DockerClient
 	Array  ArrayClient
 	VM     VMClient
+	Shares ShareClient
 }
 
 // UnraidClientOption is a function that will bind something into an UnraidClient
@@ -24,6 +25,7 @@ func NewUnraidClient(apiKey string, graphqlClient *graphql.Client, options ...Un
 		Docker: NewDockerClient(apiKey, graphqlClient),
 		Array:  NewArrayClient(apiKey, graphqlClient),
 		VM:     NewVMClient(apiKey, graphqlClient),
+		Shares: NewShareClient(apiKey, graphqlClient),
 	}
 
 	for _, option := range options {
@@ -51,5 +53,12 @@ func WithArrayClient(arrayClient ArrayClient) UnraidClientOption {
 func WithVmClient(vmClient VMClient) UnraidClientOption {
 	return func(uc *UnraidClient) {
 		uc.VM = vmClient
+	}
+}
+
+// WithShareClient allow you to custom UnraidClient with your own implementation of ShareClient
+func WithShareClient(shareClient ShareClient) UnraidClientOption {
+	return func(uc *UnraidClient) {
+		uc.Shares = shareClient
 	}
 }

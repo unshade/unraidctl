@@ -45,6 +45,7 @@ func (c *RealArrayClient) ShowArray(ctx context.Context) (*models.ShowArrayModel
 }
 
 type ArrayState = string
+
 const (
 	ArrayStateStart ArrayState = "START"
 	ArrayStateStop  ArrayState = "STOP"
