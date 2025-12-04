@@ -34,6 +34,18 @@ API_BASE_URL=https://your-unraid-server:port/graphql
 API_SKIP_TLS_VERIFY=true
 ```
 
+It also supports a config file located at `~/.config/unraidctl/config.json` with the following format:
+
+```json
+{
+  "api": {
+    "api_key": "<apikey>",
+    "base_url": "https://<unraid>:<port>/graphql",
+    "skip_tls_verify": true
+  }
+}
+```
+
 Once installed, you can run commands like:
 
 ```bash
